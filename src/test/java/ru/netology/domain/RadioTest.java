@@ -1,88 +1,128 @@
 package ru.netology.domain;
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RadioTest {
 
-    @ParameterizedTest
-    @CsvSource(value = {
-            "Critical path analysis; 5; 5",
-            "Invalid value analysis 1; -7; 0",
-            "Invalid value analysis 2; 15; 0",
-            "Boundary value analysis 1; -1; 0",
-            "Boundary value analysis 2; 0; 0",
-            "Boundary value analysis 3; 1; 1",
-            "Boundary value analysis 4; 8; 8",
-            "Boundary value analysis 5; 9; 9",
-            "Boundary value analysis 6; 10; 0",
-    }, delimiter = ';')
-    void setSelectStation(String nameTest, int inputSelectStation, int expectedStation) {
+    @Test
+    void increaseVolume() {
         Radio radio = new Radio();
-        radio.setSelectStation(inputSelectStation);
-        assertEquals(radio.getCurrentStation(), expectedStation);
+        radio.setCurrentVolume(7);
+        radio.increaseVolume();
+        assertEquals(8, radio.getCurrentVolume());
     }
 
-    @ParameterizedTest
-    @CsvSource(value = {
-            "Critical path analysis; 5; 6",
-            "Boundary value analysis 1; 0; 1",
-            "Boundary value analysis 2; 1; 2",
-            "Boundary value analysis 3; 8; 9",
-            "Boundary value analysis 4; 9; 0",
-    }, delimiter = ';')
-    void setNextStation(String nameTest, int oldCurrentStation, int expectedStation) {
+    @Test
+    void decreaseVolume() {
         Radio radio = new Radio();
-        radio.setCurrentStation(oldCurrentStation);
-        radio.setNextStation();
-        assertEquals(radio.getCurrentStation(), expectedStation);
+        radio.setCurrentVolume(7);
+        radio.decreaseVolume();
+        assertEquals(6, radio.getCurrentVolume());
     }
 
-    @ParameterizedTest
-    @CsvSource(value = {
-            "Critical path analysis; 5; 4",
-            "Boundary value analysis 1; 0; 9",
-            "Boundary value analysis 2; 1; 0",
-            "Boundary value analysis 3; 8; 7",
-            "Boundary value analysis 4; 9; 8",
-    }, delimiter = ';')
-    void setPrevCurrentStation(String nameTest, int oldCurrentStation, int expectedStation) {
+    @Test
+    void nextChannel() {
         Radio radio = new Radio();
-        radio.setCurrentStation(oldCurrentStation);
-        radio.setPrevStation();
-        assertEquals(radio.getCurrentStation(), expectedStation);
+        radio.setCurrentChannel(6);
+        radio.increaseChannel();
+        assertEquals(7, radio.getCurrentChannel());
     }
 
-    @ParameterizedTest
-    @CsvSource(value = {
-            "Critical path analysis; 6; 7",
-            "Boundary value analysis 1; 0; 1",
-            "Boundary value analysis 2; 1; 2",
-            "Boundary value analysis 3; 9; 10",
-            "Boundary value analysis 4; 10; 10",
-    }, delimiter = ';')
-    void setVolumeUp(String nameTest, int oldCurrentVolume, int expectedVolume) {
+    @Test
+    void nextChannel2() {
         Radio radio = new Radio();
-        radio.setCurrentVolume(oldCurrentVolume);
-        radio.setVolumeUp();
-        assertEquals(radio.getCurrentVolume(), expectedVolume);
+        radio.setCurrentChannel(10);
+        radio.increaseChannel();
+        assertEquals(1, radio.getCurrentChannel());
     }
 
-    @ParameterizedTest
-    @CsvSource(value = {
-            "Critical path analysis; 6; 5",
-            "Boundary value analysis 1; 0; 0",
-            "Boundary value analysis 2; 1; 0",
-            "Boundary value analysis 3; 9; 8",
-            "Boundary value analysis 4; 10; 9",
-    }, delimiter = ';')
-    void setVolumeDown(String nameTest, int oldCurrentVolume, int expectedVolume) {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(oldCurrentVolume);
-        radio.setVolumeDown();
-        assertEquals(radio.getCurrentVolume(), expectedVolume);
 
+    @Test
+    void previousChannel() {
+        Radio radio = new Radio();
+        radio.setCurrentChannel(6);
+        radio.decreaseChannel();
+        assertEquals(5, radio.getCurrentChannel());
+    }
+
+    @Test
+    void previousChannel2() {
+        Radio radio = new Radio();
+        radio.setCurrentChannel(-1);
+        radio.decreaseChannel();
+        assertEquals(9, radio.getCurrentChannel());
+    }
+
+    @Test
+    public void increaseVolumeFromMaxVolume() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(10);
+        radio.increaseVolume();
+        assertEquals(10, radio.getCurrentVolume());
+    }
+
+    @Test
+    public void decreaseVolumeFromMinVolume() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(0);
+        radio.decreaseVolume();
+        assertEquals(0, radio.getCurrentVolume());
+    }
+
+    @Test
+    public void setDesiredChannel() {
+        Radio radio = new Radio();
+        radio.setCurrentChannel(5);
+        assertEquals(5, radio.getCurrentChannel());
+    }
+
+    @Test
+    public void previousChannelFromMin() {
+        Radio radio = new Radio();
+        radio.setCurrentChannel(0);
+        radio.decreaseChannel();
+        assertEquals(9, radio.getCurrentChannel());
+    }
+
+    @Test
+    public void nextChannelFromMax() {
+        Radio radio = new Radio();
+        radio.setCurrentChannel(9);
+        radio.increaseChannel();
+        assertEquals(0, radio.getCurrentChannel());
+    }
+
+    @Test
+    public void increaseVolumeFromAnyValue() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(100);
+        radio.increaseVolume();
+        assertEquals(10, radio.getCurrentVolume());
+    }
+
+    @Test
+    public void decreaseVolumeFromAnyValue() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(100);
+        radio.decreaseVolume();
+        assertEquals(9, radio.getCurrentVolume());
+    }
+
+    @Test
+    public void decreaseVolumeFromAnyMinus() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(-100);
+        radio.decreaseVolume();
+        assertEquals(0, radio.getCurrentVolume());
+    }
+
+    @Test
+    public void increaseVolumeFromAnyMinus() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(-100);
+        radio.increaseVolume();
+        assertEquals(1, radio.getCurrentVolume());
     }
 }
