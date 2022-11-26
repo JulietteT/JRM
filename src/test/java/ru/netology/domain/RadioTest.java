@@ -1,128 +1,71 @@
 package ru.netology.domain;
 
-import org.junit.jupiter.api.Test;
+public class Radio {
+    final int maxStation;
+    static final int minStation = 0;
+    private int currentStation;
+    static final int maxVolume = 100;
+    static final int minVolume = 0;
+    private int currentVolume = 30;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-class RadioTest {
-
-    @Test
-    void increaseVolume() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(7);
-        radio.increaseVolume();
-        assertEquals(8, radio.getCurrentVolume());
+    public Radio() { //по умолчанию
+        this.maxStation = 9;
     }
 
-    @Test
-    void decreaseVolume() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(7);
-        radio.decreaseVolume();
-        assertEquals(6, radio.getCurrentVolume());
+    public Radio(int counterStation) { //изменения кол-ва станций
+        this.maxStation = counterStation - 1;
     }
 
-    @Test
-    void nextChannel() {
-        Radio radio = new Radio();
-        radio.setCurrentChannel(6);
-        radio.increaseChannel();
-        assertEquals(7, radio.getCurrentChannel());
+    public int getCurrentStation() {
+        return currentStation;
     }
 
-    @Test
-    void nextChannel2() {
-        Radio radio = new Radio();
-        radio.setCurrentChannel(10);
-        radio.increaseChannel();
-        assertEquals(1, radio.getCurrentChannel());
+    public void setCurrentStation(int currentStation) {
+        if (currentStation < minStation || currentStation > maxStation) {
+            return;
+        }
+        this.currentStation = currentStation;
     }
 
-
-    @Test
-    void previousChannel() {
-        Radio radio = new Radio();
-        radio.setCurrentChannel(6);
-        radio.decreaseChannel();
-        assertEquals(5, radio.getCurrentChannel());
+    public void nextStation() { //след станция
+        if (currentStation == maxStation) {
+            this.currentStation = minStation;
+        } else {
+            this.currentStation = currentStation + 1;
+        }
     }
 
-    @Test
-    void previousChannel2() {
-        Radio radio = new Radio();
-        radio.setCurrentChannel(-1);
-        radio.decreaseChannel();
-        assertEquals(9, radio.getCurrentChannel());
+    public void prevStation() { //пред станция
+        if (currentStation == minStation) {
+            this.currentStation = maxStation;
+        } else {
+            this.currentStation = currentStation - 1;
+        }
     }
 
-    @Test
-    public void increaseVolumeFromMaxVolume() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(10);
-        radio.increaseVolume();
-        assertEquals(10, radio.getCurrentVolume());
+    public int getCurrentVolume() {
+        return currentVolume;
     }
 
-    @Test
-    public void decreaseVolumeFromMinVolume() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(0);
-        radio.decreaseVolume();
-        assertEquals(0, radio.getCurrentVolume());
+    public void setCurrentVolume(int currentVolume) {
+        if (currentVolume < minVolume || currentVolume > maxVolume) {
+            return;
+        } else {
+            this.currentVolume = currentVolume;
+        }
     }
 
-    @Test
-    public void setDesiredChannel() {
-        Radio radio = new Radio();
-        radio.setCurrentChannel(5);
-        assertEquals(5, radio.getCurrentChannel());
+    public void volumeUp() { //повышение громкости
+        if (currentVolume == maxVolume) {
+            return;
+        }
+        this.currentVolume = currentVolume + 1;
     }
 
-    @Test
-    public void previousChannelFromMin() {
-        Radio radio = new Radio();
-        radio.setCurrentChannel(0);
-        radio.decreaseChannel();
-        assertEquals(9, radio.getCurrentChannel());
-    }
-
-    @Test
-    public void nextChannelFromMax() {
-        Radio radio = new Radio();
-        radio.setCurrentChannel(9);
-        radio.increaseChannel();
-        assertEquals(0, radio.getCurrentChannel());
-    }
-
-    @Test
-    public void increaseVolumeFromAnyValue() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(100);
-        radio.increaseVolume();
-        assertEquals(10, radio.getCurrentVolume());
-    }
-
-    @Test
-    public void decreaseVolumeFromAnyValue() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(100);
-        radio.decreaseVolume();
-        assertEquals(9, radio.getCurrentVolume());
-    }
-
-    @Test
-    public void decreaseVolumeFromAnyMinus() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(-100);
-        radio.decreaseVolume();
-        assertEquals(0, radio.getCurrentVolume());
-    }
-
-    @Test
-    public void increaseVolumeFromAnyMinus() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(-100);
-        radio.increaseVolume();
-        assertEquals(1, radio.getCurrentVolume());
+    public void volumeDown() { //понижение громкости
+        if (currentVolume == minVolume) {
+            return;
+        }
+        this.currentVolume = currentVolume - 1;
     }
 }
